@@ -27,10 +27,7 @@ data = data |>
        group_by(country) |> 
        filter(max(hostlev ) == 0)
 
-data = data |> 
-       mutate(war_share_gdp =  ifelse(war_share_gdp>  (mean(war_share_gdp) +(2*sd(war_share_gdp))), yes = NA, no = war_share_gdp)) |> 
-       group_by(countrycode) |> 
-       fill(war_share_gdp, .direction ="updown") |> 
+data = data  |> 
        mutate(war_share_gdp = war_share_gdp*100)
 
 
@@ -45,13 +42,13 @@ data = data |>
     delta = delta*100
   ) 
 
-m1 = feols(log(gdp_per_capita) ~ war_share_gdp | country + year, data = data)
+m1 = feols((gdp_per_capita/l(gdp_per_capita)-1)*100 ~ war_share_gdp | country + year, data = data, panel.id = ~ country + year)
 m1
 
-m3 = feols(log(technologie) ~ war_share_gdp | country + year, data = data)
+m3 = feols((technologie/l(technologie)-1)*100  ~ war_share_gdp | country + year, data = data, panel.id = ~ country + year)
 m3 
 
-m4 = feols(delta ~ war_share_gdp  | country + year, data = data)
+m4 = feols(delta ~ war_share_gdp  | country + year, data = data |> filter(year != min(year)))
 m4 
 
 #================================#
@@ -59,16 +56,16 @@ m4
 #================================#
 
 models <- list(
-  "Log. PIB(PC)" = m1,
-  "Log. TFP"     = m3,
+  "Crec. PIB(PC)" = m1,
+  "Crec. TFP"     = m3,
   "Depreciación"               = m4
 )
 
 ef_rows <- data.frame(
   term = c("Efectos fijos: país", "Efectos fijos: año"),
-  "Log. PIB pc"           = c("Sí", "Sí"),
-  "Log. TFP"              = c("Sí", "Sí"),
-  "Depreciación"           = c("Sí", "Sí")
+  "Crec. PIB pc"           = c("Sí", "Sí"),
+  "Crec. TFP"              = c("Sí", "Sí"),
+  "Depreciación"     = c("Sí", "Sí")
 )
 
 # tabla
@@ -81,8 +78,11 @@ modelsummary(
   escape = FALSE,
   notes = c(
     "{\\\\scriptsize Errores estándar robustos entre paréntesis.}",
-    "{\\\\scriptsize Abreviaturas: PC = per cápita}"
+    "{\\\\scriptsize Crecimiento se define como: $\\\\left(\\\\frac{Y_t}{Y_{t-1}} - 1\\\\right) \\\\times 100$.}",
+    "{\\\\scriptsize Primera observación se remueve debido a transformación en tasa de crecimiento.}",
+    "{\\\\scriptsize Abreviaturas: PC = per cápita; Crec. = crecimiento.}" 
   ),
+  fmt = fmt_decimal(decimal.mark = ".", big.mark = ","),
  output = "03_regressions/output/01_tabla_reg_principal.tex"
 )
 

@@ -1,0 +1,14 @@
+\begin{tabular}[t]{lccccccc}
+\toprule
+region & PIB per cápita & Gasto en defensa (\% PIB) & PTF & Depreciación & Inversión per cápital & Capital per cápita & Núm. países\\
+\midrule
+América Latina y el Caribe & 15268.19 & 1.38 & 1.00 & 0.04 & 2920.75 & 10871.39 & 5\\
+Asia y el Pacífico & 12080.49 & 2.28 & 0.95 & 0.05 & 3465.16 & 6507.69 & 10\\
+Europa & 38352.06 & 1.66 & 0.98 & 0.04 & 9107.58 & 22440.58 & 13\\
+Medio Oriente y Norte de África & 12464.56 & 5.60 & 1.29 & 0.05 & 3128.19 & 5649.61 & 4\\
+África subsahariana & 4546.36 & 1.85 & 0.99 & 0.04 & 859.67 & 2902.15 & 11\\
+\midrule\\
+\addlinespace
+General & 17551.28 & 2.18 & 1.01 & 0.05 & 4276.79 & 10267.31 & 43\\
+\bottomrule
+\end{tabular}

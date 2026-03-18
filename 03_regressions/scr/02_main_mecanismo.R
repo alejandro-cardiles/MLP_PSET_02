@@ -28,9 +28,6 @@ data = data |>
        filter(max(hostlev ) == 0)
 
 data = data |> 
-       mutate(war_share_gdp =  ifelse(war_share_gdp>  (mean(war_share_gdp) +(2*sd(war_share_gdp))), yes = NA, no = war_share_gdp)) |> 
-       group_by(countrycode) |> 
-       fill(war_share_gdp, .direction ="updown") |> 
        mutate(war_share_gdp = war_share_gdp*100)
 
 
@@ -75,8 +72,9 @@ modelsummary(
   escape = FALSE,
   notes = c(
     "{\\\\scriptsize Errores estándar robustos entre paréntesis.}",
-    "{\\\\scriptsize Abreviaturas: PC = per cápita; Crec. = crecimiento.}"
+    "{\\\\scriptsize Abreviaturas: PC = per cápita}"
   ),
+fmt = fmt_decimal(decimal.mark = ".", big.mark = ","),
  output = "03_regressions/output/02_tabla_reg_mecanismo.tex"
 )
 

@@ -13,4 +13,5 @@ p_load(countrycode,
        
        # plot
        scales,
-       ggtext)
+       ggtext,
+       kableExtra)
